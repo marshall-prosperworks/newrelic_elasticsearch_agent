@@ -1,0 +1,1 @@
+elasticsearch_poller: bundle exec ruby newrelic_elasticsearch_agent
