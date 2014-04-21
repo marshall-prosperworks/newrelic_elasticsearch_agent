@@ -1,1 +1,3 @@
 config/newrelic_plugin.yml
+log/
+*.swp

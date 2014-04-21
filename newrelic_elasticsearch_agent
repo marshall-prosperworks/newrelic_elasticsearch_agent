@@ -7,6 +7,7 @@ require 'net/http'
 require 'uri'
 require 'socket'
 require 'json'
+require 'erb'
 
 module ElasticsearchStatsAgent
 
@@ -118,7 +119,25 @@ module ElasticsearchStatsAgent
     end
   end
 
-  NewRelic::Plugin::Config.config_file = File.dirname(__FILE__) + '/config/newrelic_plugin.yml'
+  #generate config file
+  config_file = File.dirname(__FILE__) + '/config/newrelic_plugin.yml'
+  File.delete(config_file) if File.exists?(config_file)
+
+  File.open(config_file + '.erb', "r") do |f|
+    template = f.read
+    begin
+      contents = ERB.new(template).result
+    rescue KeyError => e
+      print "KeyError: #{e.to_s}"
+      raise(e)
+    end
+
+    File.open(config_file, 'w') do |f|
+      f.write(contents)
+    end
+  end
+
+  NewRelic::Plugin::Config.config_file = config_file
   NewRelic::Plugin::Setup.install_agent :elasticsearch_stats_agent, self
 
   NewRelic::Plugin::Run.setup_and_run
