@@ -1,0 +1,23 @@
+newrelic:
+  #
+  # Update with your New Relic account license key:
+  #
+  license_key: "<%= env['NEW_RELIC_LICENSE_KEY'] %>"
+  #
+  # Set to '1' for verbose output, remove for normal output.
+  # All output goes to stdout/stderr.
+  #
+  verbose: 1
+
+#
+# Agent Configuration, describe your nginx instances here
+#
+agents:
+  elasticsearch_stats_agent:
+    -
+      # Application name
+      name: "<%= env['ELASTICSEARCH_APPLICATION_NAME'] %>"
+      # Index name
+      # using "_all" with provide stats for all indices
+      index: "<%= env['ELASTICSEARCH_INDEX'] %>"
+      url: "<%= env['ELASTICSEARCH_URL'] %>"
