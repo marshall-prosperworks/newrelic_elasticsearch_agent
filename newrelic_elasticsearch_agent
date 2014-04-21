@@ -127,9 +127,6 @@ module ElasticsearchStatsAgent
     template = f.read
     begin
       contents = ERB.new(template).result
-    rescue KeyError => e
-      print "KeyError: #{e.to_s}"
-      raise(e)
     end
 
     File.open(config_file, 'w') do |f|
