@@ -8,8 +8,15 @@ def process(template_file, env)
 end
 
 h = Hash.new do |h,k|
-  raise("Missing key: #{k}. Keys: #{h.keys.sort}")
+  raise("Missing key: #{k}. Keys: #{h.keys.sort.to_s}")
 end
 
 h.merge!(ENV)
-puts process('config/newrelic_plugin.yml.erb', h)
+
+config_file = 'config/newrelic_plugin.yml'
+File.delete(config_file) if File.exists?(config_file)
+
+contents = process('config/newrelic_plugin.yml.erb', h)
+File.open(config_file, 'w') do |f|
+  f.write(contents)
+end
